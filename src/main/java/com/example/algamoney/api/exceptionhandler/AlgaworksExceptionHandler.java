@@ -39,7 +39,7 @@ public class AlgaworksExceptionHandler extends ResponseEntityExceptionHandler {
 		List<Erro> erros = criarListaDeErros(ex.getBindingResult());
 		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
 	}
-
+	
 	private List<Erro> criarListaDeErros(BindingResult bindingResult) {
 		List<Erro> erros = new ArrayList<>();
 		for (FieldError fieldError : bindingResult.getFieldErrors()) {

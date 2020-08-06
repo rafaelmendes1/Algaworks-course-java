@@ -19,36 +19,36 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.example.algamoney.api.model.Category;
-import com.example.algamoney.api.repository.CategoryRepository;
+import com.example.algamoney.api.model.Pessoa;
+import com.example.algamoney.api.repository.PessoaRepository;
 
 @RestController
-@RequestMapping("/categories")
-public class CategoryResource {
-	
+@RequestMapping("/pessoas")
+public class PessoaResource {
+
 	@Autowired
-	private CategoryRepository categoryRepository;
+	private PessoaRepository pessoaRepository;
 	
 	@GetMapping
-	public List<Category> listar() {
-		return categoryRepository.findAll();
+	public ResponseEntity<List<Pessoa>> findAll() {
+		List<Pessoa> list = pessoaRepository.findAll();
+		return ResponseEntity.ok().body(list);
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Category> criar(@Valid @RequestBody Category category, HttpServletResponse response) {
-		Category categorySave = categoryRepository.save(category);
+	public ResponseEntity<Pessoa> criar(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response) {
+		Pessoa pessoaSave = pessoaRepository.save(pessoa);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
-				.buildAndExpand(categorySave.getId()).toUri();
+				.buildAndExpand(pessoaSave.getId()).toUri();
 		response.setHeader("Location", uri.toASCIIString());
-		return ResponseEntity.created(uri).body(categorySave);
+		return ResponseEntity.created(uri).body(pessoaSave);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Optional<Category>> findById(@PathVariable Long id) {
-		Optional<Category> category = categoryRepository.findById(id);
-		return category.isPresent() ? ResponseEntity.ok(category) : ResponseEntity.notFound().build();
+	public ResponseEntity<Optional<Pessoa>> findById(@PathVariable Long id) {
+		Optional<Pessoa> pessoa = pessoaRepository.findById(id);
+		return pessoa.isPresent() ? ResponseEntity.ok().body(pessoa) : ResponseEntity.notFound().build() ;
 	}
-	
 }
