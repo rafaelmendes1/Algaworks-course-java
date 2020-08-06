@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.algamoney.api.event.RecursoCriadoEvent;
 import com.example.algamoney.api.model.Pessoa;
 import com.example.algamoney.api.repository.PessoaRepository;
+import com.example.algamoney.api.service.PessoaService;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -29,6 +31,9 @@ public class PessoaResource {
 
 	@Autowired
 	private PessoaRepository pessoaRepository;
+	
+	@Autowired
+	private PessoaService pessoaService;
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;
@@ -57,5 +62,11 @@ public class PessoaResource {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id) {
 		pessoaRepository.deleteById(id);
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<Pessoa> atualizar(@PathVariable Long id, @Valid @RequestBody Pessoa pessoa) {
+		Pessoa pessoaSalva = pessoaService.atualizar(id, pessoa);
+		return ResponseEntity.ok(pessoaSalva);
 	}
 }
