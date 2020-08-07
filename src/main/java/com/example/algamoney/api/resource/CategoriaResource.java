@@ -47,14 +47,14 @@ public class CategoriaResource {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Optional<Categoria>> findById(@PathVariable Long id) {
+	public ResponseEntity<Optional<Categoria>> buscarCategoriaPeloCodigo(@PathVariable Long id) {
 		Optional<Categoria> category = categoryRepository.findById(id);
 		return category.isPresent() ? ResponseEntity.ok(category) : ResponseEntity.notFound().build();
 	}
 	
 	@DeleteMapping("{/id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long id) {
+	public void remover(@PathVariable Long id) {
 		categoryRepository.deleteById(id);
 	}
 	

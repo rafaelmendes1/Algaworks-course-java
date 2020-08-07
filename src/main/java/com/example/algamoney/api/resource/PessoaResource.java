@@ -39,7 +39,7 @@ public class PessoaResource {
 	private ApplicationEventPublisher publisher;
 	
 	@GetMapping
-	public ResponseEntity<List<Pessoa>> findAll() {
+	public ResponseEntity<List<Pessoa>> listar() {
 		List<Pessoa> list = pessoaRepository.findAll();
 		return ResponseEntity.ok().body(list);
 	}
@@ -53,14 +53,14 @@ public class PessoaResource {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Optional<Pessoa>> findById(@PathVariable Long id) {
+	public ResponseEntity<Optional<Pessoa>> buscarPessoaPeloId(@PathVariable Long id) {
 		Optional<Pessoa> pessoa = pessoaRepository.findById(id);
 		return pessoa.isPresent() ? ResponseEntity.ok().body(pessoa) : ResponseEntity.notFound().build() ;
 	}
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long id) {
+	public void remover(@PathVariable Long id) {
 		pessoaRepository.deleteById(id);
 	}
 	
@@ -68,5 +68,10 @@ public class PessoaResource {
 	public ResponseEntity<Pessoa> atualizar(@PathVariable Long id, @Valid @RequestBody Pessoa pessoa) {
 		Pessoa pessoaSalva = pessoaService.atualizar(id, pessoa);
 		return ResponseEntity.ok(pessoaSalva);
+	}
+	
+	@PutMapping("/{id}/ativo")
+	public void atualizarPropriedadeAtivo(@PathVariable Long id, @RequestBody Boolean ativo) {
+		pessoaService.atualizarPropriedadeAtivo(id, ativo);
 	}
 }
