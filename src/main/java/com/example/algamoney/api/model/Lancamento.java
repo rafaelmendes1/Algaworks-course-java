@@ -31,7 +31,7 @@ public class Lancamento {
 	private LocalDate dataPagamento;
 	
 	private BigDecimal valor;
-	private	String obeservacao;
+	private	String observacao;
 	
 	@Enumerated(EnumType.STRING)
 	private TipoLancamento tipo;
@@ -84,12 +84,12 @@ public class Lancamento {
 		this.valor = valor;
 	}
 
-	public String getObeservacao() {
-		return obeservacao;
+	public String getObservacao() {
+		return observacao;
 	}
 
-	public void setObeservacao(String obeservacao) {
-		this.obeservacao = obeservacao;
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
 	}
 
 	public TipoLancamento getTipo() {
