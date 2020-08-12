@@ -1,7 +1,6 @@
 package com.example.algamoney.api.resource;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -47,15 +46,15 @@ public class CategoriaResource {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Optional<Categoria>> buscarCategoriaPeloCodigo(@PathVariable Long id) {
-		Optional<Categoria> category = categoryRepository.findById(id);
-		return category.isPresent() ? ResponseEntity.ok(category) : ResponseEntity.notFound().build();
+	public ResponseEntity<Categoria> buscarCategoriaPeloCodigo(@PathVariable Long id) {
+		Categoria category = categoryRepository.findOne(id);
+		return category != null ? ResponseEntity.ok(category) : ResponseEntity.notFound().build();
 	}
 	
 	@DeleteMapping("{/id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long id) {
-		categoryRepository.deleteById(id);
+		categoryRepository.delete(id);
 	}
 	
 }
