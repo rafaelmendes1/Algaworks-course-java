@@ -56,6 +56,7 @@ public class CategoriaResource {
 	
 	@DeleteMapping("{/id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasAuthority('ROLE_REMOVER_CATEGORIA') and #oauth2.hasScope('write')")
 	public void remover(@PathVariable Long id) {
 		categoryRepository.delete(id);
 	}
