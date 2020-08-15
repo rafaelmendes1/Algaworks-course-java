@@ -1,5 +1,6 @@
 package com.example.algamoney.api.service;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,15 +15,29 @@ public class LancamentoService {
 
 	@Autowired
 	private PessoaRepository pessoaRepository;
-	
-	@Autowired 
+
+	@Autowired
 	private LancamentoRepository lancamentoRepository;
-	
+
 	public Lancamento salvar(Lancamento lancamento) {
 		Pessoa pessoa = pessoaRepository.findOne(lancamento.getPessoa().getId());
-		if(pessoa == null || pessoa.isInativo()) {
-			throw new PessoaInexistenteOuInativaException();
-		}
+		validarPessoa(pessoa);
+		
 		return lancamentoRepository.save(lancamento);
 	}
+
+	public Lancamento atualizar(Long id, Lancamento lancamento) {
+		Lancamento lancamentoSalvo = lancamentoRepository.findOne(id);
+		
+		validarPessoa(lancamento.getPessoa());
+		BeanUtils.copyProperties(lancamento, lancamentoSalvo, "id");
+		return lancamentoRepository.save(lancamentoSalvo);
+	}
+
+	private void validarPessoa(Pessoa pessoa) {
+		if (pessoa == null || pessoa.isInativo()) {
+			throw new PessoaInexistenteOuInativaException();
+		}
+	}
+
 }
